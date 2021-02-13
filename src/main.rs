@@ -1,23 +1,22 @@
+use std::env;
 use std::fs::{ self, File };
 use std::io::Write;
 use std::path::Path;
 use structopt::StructOpt;
 use uuid::Uuid;
 
-mod create_dirs;
 mod input;
 
 fn main() -> std::io::Result<()> {
     let args = input::Jeeves::from_args();
 
-    match create_dirs::create_dirs(&args.name) {
-        Ok(_) => (),
-        Err(e) => {
-            println!("Unable to create dir {}: {}", &args.name, e);
-        }
+    if args.pluto {
+        fs::create_dir_all(env::current_dir()?.join(&args.name))?;
+        fs::write(Path::new(&args.name).join(format!("{}.jl", &args.name)), "using Pluto\n\nPluto.run()")?;
+    } else {
+        fs::create_dir_all(env::current_dir()?.join(&args.name).join("src"))?;
+        fs::write(Path::new(&args.name).join("src").join(format!("{}.jl", &args.name)), "println(\"Hello, world!\")")?;
     }
-
-    fs::write(Path::new(&args.name).join("src").join(format!("{}.jl", &args.name)), "println(\"Hello, world!\")")?;
 
     fs::write(Path::new(&args.name).join("Manifest.toml"), "# This file is machine-generated - editing it directly is not advised")?;
 
