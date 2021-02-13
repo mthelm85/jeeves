@@ -14,7 +14,7 @@ To use Jeeves, save `jeeves.exe` somewhere and add the location to your PATH env
 Downloading `.exe` files that you find on GitHub isn't the safest thing in the world. All of the source code is available here so, if you have the Rust programming language and related tools installed (namely `cargo`), you can compile the binary yourself. If you decide to download and use the `jeeves.exe` file from this repo, make sure that the 
 SHA256 checksum matches this one: 
 
-`AE81E6216FF7A891A55B5752A131644CFD015233F858D361350A46C5E1547F60`
+`D487DA82680D843901F2CB3631DE6F100564B396A07088D16A14EE0F781FDFDC`
 
 # New Features
 
