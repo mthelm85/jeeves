@@ -20,8 +20,6 @@ fn main() -> std::io::Result<()> {
 
     project_toml.write_all(project_name.as_bytes())?;
 
-    println!("{} successfully created", &args.name);
-
     julia_ver::julia_ver();
 
     Ok(())

@@ -3,6 +3,7 @@ use lazy_static::lazy_static;
 use regex::Regex;
 use reqwest;
 use scraper::{ Html, Selector };
+use whoami;
 
 struct Version {
     major: u32,
@@ -27,7 +28,7 @@ fn exract_julia_version(input: &str) -> Option<Version> {
 }
 
 fn latest_julia() {
-    let resp = reqwest::blocking::get("https://julialang.org/downloads/#current_stable_release").unwrap();
+    let resp = reqwest::blocking::get("https://julialang.org/downloads/#current_stable_release").expect("Unable to retrieve the latest version of Julia");
     let body = resp.text().unwrap();
     let fragment = Html::parse_document(&body);
     let latest = Selector::parse("#current_stable_release").unwrap();
@@ -38,7 +39,7 @@ fn latest_julia() {
 
 pub fn julia_ver() {
     let mut vers: Vec<Version> = vec![];
-    for dir in fs::read_dir("C:\\Users\\mthel\\AppData\\Local\\Programs").unwrap() {
+    for dir in fs::read_dir(format!("C:\\Users\\{}\\AppData\\Local\\Programs", whoami::username())).expect("Unable to find local Julia installation") {
         if let Some(ver) = exract_julia_version(dir.unwrap().path().to_str().expect("a str")) {
             vers.push(ver);
         }
