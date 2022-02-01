@@ -5,10 +5,10 @@ use reqwest;
 use scraper::{ Html, Selector };
 use whoami;
 
-struct Version {
-    major: u32,
-    minor: u32,
-    patch: u32
+pub struct Version {
+    pub major: u32,
+    pub minor: u32,
+    pub patch: u32
 }
 
 fn exract_julia_version(input: &str) -> Option<Version> {
@@ -37,7 +37,7 @@ fn latest_julia() {
     }
 }
 
-pub fn julia_ver() {
+pub fn julia_ver() -> Version {
     let mut vers: Vec<Version> = vec![];
     for dir in fs::read_dir(format!("C:\\Users\\{}\\AppData\\Local\\Programs", whoami::username())).expect("Unable to find local Julia installation") {
         if let Some(ver) = exract_julia_version(dir.unwrap().path().to_str().expect("a str")) {
@@ -50,5 +50,6 @@ pub fn julia_ver() {
         "Your Julia version: v{}.{}.{}",
         max_major_minor.unwrap().major, max_major_minor.unwrap().minor, max_major_minor.unwrap().patch
     );
-    latest_julia()
+    latest_julia();
+    Version { major: max_major_minor.unwrap().major, minor: max_major_minor.unwrap().minor, patch: max_major_minor.unwrap().patch }
 }
