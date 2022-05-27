@@ -46,10 +46,13 @@ pub fn julia_ver() -> Version {
     }
     let max_major = vers.iter().max_by_key(|v| v.major);
     let max_major_minor = max_major.iter().filter(|v| v.major == max_major.unwrap().major).max_by_key(|v| v.minor);
+    let max_major_minor_patch = max_major_minor.iter()
+        .filter(|v| v.major == max_major_minor.unwrap().major && v.minor == max_major_minor.unwrap().minor)
+        .max_by_key(|v| v.patch);
     println!(
         "Your Julia version: v{}.{}.{}",
-        max_major_minor.unwrap().major, max_major_minor.unwrap().minor, max_major_minor.unwrap().patch
+        max_major_minor_patch.unwrap().major, max_major_minor_patch.unwrap().minor, max_major_minor_patch.unwrap().patch
     );
     latest_julia();
-    Version { major: max_major_minor.unwrap().major, minor: max_major_minor.unwrap().minor, patch: max_major_minor.unwrap().patch }
+    Version { major: max_major_minor_patch.unwrap().major, minor: max_major_minor_patch.unwrap().minor, patch: max_major_minor_patch.unwrap().patch }
 }
